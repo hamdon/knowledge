@@ -1,3 +1,5 @@
+reference:[http://www.linuxnix.com/find-ram-size-in-linuxunix/](http://www.linuxnix.com/find-ram-size-in-linuxunix/)
+
 free is a command which can give us valuable information on available RAM in Linux machine. But many new Linux users and admins misinterpret it’s output. In this post we will walk through it’s output format and show you actual free RAM.
 
 ###**FREE COMMAND EXAMPLES**
