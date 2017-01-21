@@ -34,6 +34,7 @@ Let us dig more in to these lines to better understand it as Linux user prospect
 Puzzled with buffers and cache?
 ###**WHAT IS THE DIFFERENCE BETWEEN BUFFERS AND CACHE?**
 A buffer is a temporary location to store data for a particular application and this data is not used by any other application. This is similar to bandwidth concept. When you try to send burst of data through network, if your network card is capable of sending less data, it will keep these huge amounts of data in buffer so that it can send data constantly in lesser speeds. In other hand Cache is a memory location to store frequently used data for faster access. Other difference between a buffer and a cache is that cache can be used multiple times where as buffer is used single time. And both are temporary store for your data processing.
+
 **Line 2: -/+ buffers/cache: 2643288 5384664**
 ```
 2643288 : This is actual size of used RAM which we get from RAM used -(buffers + cache)
@@ -53,6 +54,7 @@ Then why my Linux machine is showing 4377300 as used RAM. This is because Linux 
 	Total actual available RAM = 5384664
 ```
 So from today on words don’t complain that Linux ate your RAM, it’s our understanding of free command output which is the culprit and the teacher who thought us Linux. If any one asks what is the free RAM available, we have to give this number(**5384664**) instead of first line number(**4377300**) for free RAM available in your machine.
+
 **Line 3: Swap: 15624188 608948 15015240**
 This line indicates swap details like total SWAP size, used as well as free SWAP.
 
