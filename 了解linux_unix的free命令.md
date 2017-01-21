@@ -16,7 +16,9 @@ Output:
  Let us see what this table for you.
 
 **Line 1**: Indicates Memory details like total available RAM, used RAM, Shared RAM, RAM used for buffers, RAM used of caching content.
+
 **Line 2**: Indicates total buffers/Cache used and free.
+
 **Line 3**: Indicates total swap memory available, used swap and free swap memory size available.
 
 Let us dig more in to these lines to better understand it as Linux user prospective.
