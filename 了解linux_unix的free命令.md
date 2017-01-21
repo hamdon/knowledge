@@ -96,6 +96,7 @@ root@linuxnix.com:/home/surendra# free -k
 
 With out –si
 >free -g
+
 Output:
 ```
 	total used free shared buffers cached
