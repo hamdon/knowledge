@@ -87,7 +87,7 @@ php-fpm-mmy          latest              ca5e9f3d0b8a        18 hours ago       
 ```
 ### 10. 执行启用容器命令
 ```
-#docker run --name php7-fpm --restart=always --privileged=true -v /docker/supervisor/config:/etc/supervisor/conf.d -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/bin/docker -v /docker/www/broker:/www -v /docker/php/php.ini:/usr/local/etc/php/php.ini:ro -v /docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro -v /docker/php/logs/php.log:/var/log/php.log:rw -v /docker/php/php-fpm.conf:/usr/local/etc/php-fpm.conf:ro -d php-fpm-mmy php-fpm
+#docker run --name php7-fpm --restart=always --privileged=true -e TZ="Asia/Shanghai" -v /docker/supervisor/config:/etc/supervisor/conf.d -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/bin/docker -v /docker/www/broker:/www -v /docker/php/php.ini:/usr/local/etc/php/php.ini:ro -v /docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro -v /docker/php/logs/php.log:/var/log/php.log:rw -v /docker/php/php-fpm.conf:/usr/local/etc/php-fpm.conf:ro -d php-fpm-mmy php-fpm
 ```
 /docker/php 目录结构
 ```
