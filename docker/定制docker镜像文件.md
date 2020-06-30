@@ -156,3 +156,7 @@ docker exec -it 0f97fabb71b1 supervisorctl reload
 docker save -o php_fpm_mmy.tar.gz php-fpm-mmy
 
 ```
+
+### Docker 中的 PHP 如何安装扩展
+
+[单击查看](https://my.oschina.net/antsky/blog/1591418)
