@@ -29,9 +29,7 @@ RUN apt-get install cron -y \
  && apt-get autoclean \
  && apt-get clean \
  && pecl install imagick \
- && pecl install mongodb \
  && docker-php-ext-enable imagick \
- && docker-php-ext-enable mongodb \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY ./crontab /var/spool/cron/crontabs/root
