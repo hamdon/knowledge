@@ -1,5 +1,27 @@
 ## 现在以定制php-fpm镜像为例子,加入supervisor和系统任务调度cron
 
+### 首先要更新docker的镜像地址到阿里云，或者国内某个有名的地址。
+[单击查看](https://cr.console.aliyun.com/cn-zhangjiakou/instances/mirrors)
+
+ Ubuntu 和CentOs的配置
+1. 安装／升级Docker客户端
+推荐安装1.10.0以上版本的Docker客户端，参考文档 docker-ce
+
+2. 配置镜像加速器
+针对Docker客户端版本大于 1.10.0 的用户
+
+您可以通过修改daemon配置文件/etc/docker/daemon.json来使用加速器
+```
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://dttvopmr.mirror.aliyuncs.com"]
+}
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
 ### 1. 下载要引用的镜像
 
 ```
@@ -43,6 +65,46 @@ COPY ./entrypoint.sh /usr/local/bin/
 RUN chmod 777 /usr/local/bin/entrypoint.sh
 CMD ["entrypoint.sh"]
 ```
+来一份带mongodb 和 ffmpeg的
+```
+FROM crunchgeek/php-fpm:7.2
+MAINTAINER Hamdon "cao4141@qq.com"
+RUN echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/jessie-backports.list
+RUN sed -i '/deb http:\/\/deb.debian.org\/debian jessie-updates main/d' /etc/apt/sources.list
+RUN apt-get -o Acquire::Check-Valid-Until=false update
+RUN apt-get -y --force-yes install yasm ffmpeg
+
+RUN apt-get install cron -y \
+ && apt-get install supervisor \
+ && apt-get install -y libmagickwand-dev --no-install-recommends \
+ && apt-get autoremove \
+ && apt-get autoclean \
+ && apt-get clean \
+ && pecl install imagick \
+ && pecl install mongodb \
+ && docker-php-ext-enable imagick \
+ && docker-php-ext-enable mongodb \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+COPY ./crontab /var/spool/cron/crontabs/root
+RUN chmod 0644 /var/spool/cron/crontabs/root
+RUN crontab /var/spool/cron/crontabs/root
+
+RUN chmod 777 /var/run
+RUN chmod 777 /etc/supervisor
+
+COPY ./entrypoint.sh /usr/local/bin/
+RUN chmod 777 /usr/local/bin/entrypoint.sh
+CMD ["entrypoint.sh"]
+
+```
+里面的第一个链接地址可以修改成这个试试
+```
+http://archive.debian.org/debian
+改成：
+http://mirrors.163.com/debian 
+```
+
  ### 5. 创建系统任务调试crontab文件,并增加内容
 ```
 #touch crontab
