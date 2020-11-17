@@ -98,7 +98,7 @@ RUN chmod 777 /usr/local/bin/entrypoint.sh
 CMD ["entrypoint.sh"]
 
 ```
-里面的第一个链接地址可以修改成这个试试
+~~里面的第一个链接地址可以修改成这个试试~~(废弃)
 ```
 http://archive.debian.org/debian
 改成：
