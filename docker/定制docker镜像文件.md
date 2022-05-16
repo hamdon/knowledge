@@ -95,7 +95,7 @@ RUN chmod 777 /etc/supervisor
 
 COPY ./entrypoint.sh /usr/local/bin/
 RUN chmod 777 /usr/local/bin/entrypoint.sh
-CMD ["entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 ```
 ~~里面的第一个链接地址可以修改成这个试试~~(废弃)
@@ -122,10 +122,8 @@ http://mirrors.163.com/debian
 ```
 #!/bin/bash
 set -e
-cron
-supervisord
-supervisorctl update
-supervisorctl reload
+/etc/init.d/cron start
+/usr/bin/supervisord -c /etc/supervisor/supervisord.conf
 exec "$@"
 ```
 ### 7. 目录结构
