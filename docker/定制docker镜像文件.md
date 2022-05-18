@@ -55,7 +55,7 @@ RUN apt-get install cron -y \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY ./crontab /var/spool/cron/crontabs/root
-RUN chmod 0644 /var/spool/cron/crontabs/root
+RUN chmod 600 /var/spool/cron/crontabs/root
 RUN crontab /var/spool/cron/crontabs/root
 
 RUN chmod 777 /var/run
