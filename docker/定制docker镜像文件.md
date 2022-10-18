@@ -231,3 +231,6 @@ docker load -i php_fpm_mmy.tar.gz
 [单击查看](https://cloud.tencent.com/developer/article/1708294)
 [单击查看](https://blog.csdn.net/yanjiee/article/details/119773641)
 
+### linux计划任务踩坑
+https://blog.csdn.net/qq_41874930/article/details/112781957
+
