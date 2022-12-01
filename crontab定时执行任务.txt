@@ -1,0 +1,16 @@
+1.查看crontab的服务状态
+  service cron status （/service crond status）
+  如果 stop，需执行service cron start
+  如果 running，则运行中。
+
+
+2.操作中遇到的问题
+   1）开启crontab的日志记录
+      （1）在ubuntu下安装crontab后，系统默认的是不开启crontab的日志记录，如何开始crontab的日志：
+   修改rsyslog文件，将/etc/rsyslog.d/50-default.conf 文件中的#cron.*前的#删掉。
+      （2）重启rsyslog服务service rsyslog restart；
+      （3）重启cron服务service cron restart；
+      （4）more /var/log/cron.log；
+   2）如果日志出现Skipping @reboot jobs -- not system startup
+      （1）把文件/var/run/crond.reboot删除
+      （2）service cron restart 重启任务
