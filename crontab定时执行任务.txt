@@ -14,3 +14,21 @@
    2）如果日志出现Skipping @reboot jobs -- not system startup
       （1）把文件/var/run/crond.reboot删除
       （2）service cron restart 重启任务
+
+crontab -e和vi /etc/ crontab 区别
+crontab -e对应的是用户级，vi /etc/ crontab对应的系统级的
+用户级
+使用crontab -e 这个命令会自动打开vim然后编辑定时脚本文件，编写后保存，在ubuntu下会被写到/var/spool/cron/crontabs目录下，生成一个和用户名一致的文件,我们可以直接用crontab -l查看内容,
+系统级
+cronotab -e是针对用户来设计的，如果是系统的例行性任务，需要编辑/etc/crontab这个文件，编辑完所有用户都会受其影响
+
+每列分别是分、时、日、月及周进行一次的工作！但是在五个字段后面接的并不是命令，而是执行命令的身份！这个用户的crontab -e不相同。由于用户自己的crontab并不需要指定身份，但/etc/crontab里面需指定身份。
+
+
+实际操作中执行定时的脚本时，却报各种错误，
+基本上全是和环境相关，但问题是，我再Linux下手动执行改脚本时，却没有任何问题，这里大胆怀疑定时任务在执行这个python脚本时用的别的环境变量，后来查了资料发现，怀疑果然成立，crontab有自己的用户，在执行脚本的时候会用自己的环境变量，而我们用的是我们自己的环境变量（装有python及所需环境），所以也就能解释为什么执行python脚本会失败了。根据网上的文章一顿操作，修改了crontab的启动时的环境变量，但是发现问题依旧存在。。。但是，这就真的没有其他的解决办法了吗？怎么会，既然没法直接启动python脚本，我们可以间接启吗！既然crontab的环境变量和用户的环境变量有差异，那我们就利用两者的环境变量相同的地方。
+
+解决办法:通过自定义shell脚本，然后用定时任务来启shell脚本（shell环境变量两者肯定都有吧），在shell脚本里面来启Python脚本，但前提是你要指定对应的环境变量
+
+(https://blog.csdn.net/qq_16633405/article/details/84394809)
+
