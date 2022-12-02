@@ -31,4 +31,5 @@ cronotab -e是针对用户来设计的，如果是系统的例行性任务，需
 解决办法:通过自定义shell脚本，然后用定时任务来启shell脚本（shell环境变量两者肯定都有吧），在shell脚本里面来启Python脚本，但前提是你要指定对应的环境变量
 
 (https://blog.csdn.net/qq_16633405/article/details/84394809)
+（https://www.cnblogs.com/longjshz/p/5779215.html）
 
