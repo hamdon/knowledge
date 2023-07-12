@@ -240,3 +240,22 @@ https://blog.csdn.net/u012206617/article/details/106146006/
 docker 挂载的文件，要设置权限为：0666时修改宿主机文件，docker容器才会实时同步，但是/etc/crontab如果设置为0666的话，则容器里面的cron不会执行此文件，要在宿主机修改文件的权限为：0600时，docker里面才会执行这个/etc/crontab文件，所以如果docker挂载的文件不是定时执行任务，则设置文件权限为0666(chmod 0666 xxxx),如果是定时任务文件，则设置文件权限为0600(chmod 0600 xxxx),为了让定时任务的文件可以一致，可以修改完宿主机的文件，再进到容器里面修改/etc/crontab文件，然后重启（/etc/init.d/cron restart）,或者修改完宿主机的定时任务文件后，重启docker(docker restat xxxx),或者修改完宿主机的文件后，使用docker cp命令复制文件到docker容器里面（docker cp 本地文件路径 容器ID/容器NAME:容器内路径）
 
 /etc/crontab 文件对应宿主机的文件要给chmod 0600 权限，docker容器里面的定时任务才会执行
+```
+SHELL=/bin/bash
+PATH=/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+MAILTO=root
+HOME=/
+
+# For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
+* * * * * root /usr/local/bin/php /www/xxxx/artisan schedule:run >> /dev/null 2>&1
+*/1 * * * * root echo "11" >> /www/a.log
+```
