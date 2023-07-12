@@ -54,9 +54,8 @@ RUN apt-get install cron -y \
  && docker-php-ext-enable imagick \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY ./crontab /var/spool/cron/crontabs/root
-RUN chmod 600 /var/spool/cron/crontabs/root
-RUN crontab /var/spool/cron/crontabs/root
+COPY ./crontab /etc/crontab 
+RUN chmod 600 /etc/crontab
 
 RUN chmod 777 /var/run
 RUN chmod 777 /etc/supervisor
@@ -86,9 +85,8 @@ RUN apt-get install cron -y \
  && docker-php-ext-enable mongodb \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY ./crontab /var/spool/cron/crontabs/root
-RUN chmod 0644 /var/spool/cron/crontabs/root
-RUN crontab /var/spool/cron/crontabs/root
+COPY ./crontab /etc/crontab 
+RUN chmod 600 /etc/crontab
 
 RUN chmod 777 /var/run
 RUN chmod 777 /etc/supervisor
@@ -108,11 +106,26 @@ http://mirrors.163.com/debian
  ### 5. 创建系统任务调试crontab文件,并增加内容
 ```
 #touch crontab
+#chmod 0600 crontab
 ```
 内容
 ```
-#!/usr/bin/env bash
-* * * * * /usr/local/bin/php /www/artisan schedule:run >> /dev/null 2>&1
+SHELL=/bin/bash
+PATH=/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+MAILTO=root
+HOME=/
+
+# For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
+* * * * * root /usr/local/bin/php /www/xxxx/artisan schedule:run >> /dev/null 2>&1
 ```
  ### 6. 创建入口执行命令脚本 entrypoint.sh，并增加内容
 ```
@@ -149,7 +162,7 @@ php-fpm-mmy          latest              ca5e9f3d0b8a        18 hours ago       
 ```
 ### 10. 执行启用容器命令
 ```
-#docker run --name php7-fpm --restart=always --privileged=true -e TZ="Asia/Shanghai" -v /docker/supervisor/config:/etc/supervisor/conf.d -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/bin/docker -v /docker/www/broker:/www -v /docker/php/php.ini:/usr/local/etc/php/php.ini:ro -v /docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro -v /docker/php/logs/php.log:/var/log/php.log:rw -v /docker/php/php-fpm.conf:/usr/local/etc/php-fpm.conf:ro -d php-fpm-mmy php-fpm
+#docker run --name php7-fpm --restart=always --privileged=true -e TZ="Asia/Shanghai" -v /docker/supervisor/config:/etc/supervisor/conf.d -v /docker/crontab/crontab:/etc/crontab:rw -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/bin/docker -v /docker/www/broker:/www -v /docker/php/php.ini:/usr/local/etc/php/php.ini:ro -v /docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro -v /docker/php/logs/php.log:/var/log/php.log:rw -v /docker/php/php-fpm.conf:/usr/local/etc/php-fpm.conf:ro -d php-fpm-mmy php-fpm
 ```
 /docker/php 目录结构
 ```
@@ -180,12 +193,11 @@ php-fpm-mmy          latest              ca5e9f3d0b8a        18 hours ago       
 ```
 ### 12. 运行各个测试命令
 ```
-#docker exec -it 0f97fabb71b1 crontab -l
+#docker exec -it 0f97fabb71b1 /etc/init.d/cron status
 ```
 回显内容
 ```
-#!/usr/bin/env bash
-* * * * * /usr/local/bin/php /www/artisan schedule:run >> /dev/null 2>&1
+[ ok ] cron is running.
 ```
 ```
 #docker exec -it 0f97fabb71b1 php-fpm -v
