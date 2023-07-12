@@ -235,3 +235,7 @@ docker load -i php_fpm_mmy.tar.gz
 https://blog.csdn.net/qq_41874930/article/details/112781957
 
 https://blog.csdn.net/u012206617/article/details/106146006/
+
+
+
+/etc/crontab 文件要给chmod 0666 权限
